@@ -8,7 +8,8 @@ use backend\models\PostSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+use common\components\AccessControl;
+
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -21,17 +22,20 @@ class PostController extends Controller
     public function behaviors()
     {
         return [ 
-            'access' => [
+            /*'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'create', 'delete','update','view'],
+                        'action' => ['index','create'],
                         'allow' => true,
                         'roles' => ['@'],
-                    ],
+                    ].
                 ],
+            ],*/
+            'access' => [
+                //'class' => 'common\components\AccessControl,
+                'class' => AccessControl::class
             ],
-
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -47,15 +51,15 @@ class PostController extends Controller
      */
     public function actionIndex()
     {   
-        if (Yii::$app->user->can('post-list')){
+       //if (Yii::$app->user->can('post-index')){
         $searchModel = new PostSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    //}
     }
-}
 
     /**
      * Displays a single Post model.
@@ -69,18 +73,12 @@ class PostController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
-    }
+        }else{
+            //
+        }
 }
-
-    /**
-     * Creates a new Post model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
-       
     {
-        if (Yii::$app->user->can('post-create')) {
         $model = new Post();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -90,7 +88,6 @@ class PostController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
-    }
     }
 
         
@@ -103,7 +100,7 @@ class PostController extends Controller
      */
     public function actionUpdate($id)
     {
-        if (Yii::$app->user->can('post-update')){
+       
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -113,7 +110,7 @@ class PostController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-    }
+    
     }
 
     /**
@@ -125,11 +122,8 @@ class PostController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can('post-delete')){
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
-    }
 }
 
     /**
