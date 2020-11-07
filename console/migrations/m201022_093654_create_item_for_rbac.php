@@ -37,18 +37,21 @@ class m201022_093654_create_item_for_rbac extends Migration
 	public function safeDown()
 	{
 		$auth = Yii::$app->authManager;
-		$admin = $auth->getRole('admin');
-		if ($admin){
-			$auth->remove($admin);
+        
+        $admin = $auth->getRole('admin');
+        if ($admin) {
+            $auth->remove($admin);
         }
-        $author= $auth->getRole('author');
-		if ($auth){
-			$auth->remove($author);
-		}
-        $superAdmin= $auth->getRole('super-admin');
-		if ($superAdmin){
-			$auth->remove($superAdmin);
-		}
+
+        $author = $auth->getRole('author');
+        if ($author) {
+            $auth->remove($author);
+        }
+
+        $superAdmin = $auth->getRole('super-admin');
+        if ($superAdmin) {
+            $auth->remove($superAdmin);
+        }
 		return true;
 	}
 

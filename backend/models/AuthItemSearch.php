@@ -6,9 +6,6 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\AuthItem;
 
-/**
- * AuthItemSearch represents the model behind the search form of `backend\models\AuthItem`.
- */
 class AuthItemSearch extends AuthItem
 {
     /**
@@ -21,10 +18,6 @@ class AuthItemSearch extends AuthItem
             [['type', 'created_at', 'updated_at'], 'integer'],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
@@ -51,12 +44,8 @@ class AuthItemSearch extends AuthItem
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
-
-        // grid filtering conditions
         $query->andFilterWhere([
             'type' => $this->type,
             'created_at' => $this->created_at,
